@@ -24,7 +24,7 @@ df <-read.csv("C:/Users/xg1m22/OneDrive - University of Southampton/Desktop/Aust
 df$year<-as.factor(substr(df$ID,6,9))
 df<-na.omit(df)
 # create task with spatial coordinates
-task = makeClassifTask(data = as.data.frame(df[,5:33]), target='Species',coordinates = as.data.frame(points1[,3:4]))
+task = makeClassifTask(data = as.data.frame(df[,5:33]), target='Species',coordinates = as.data.frame(df[,3:4]))
 learner.rf = makeLearner("classif.ranger", predict.type = "prob")
 set.seed(123)
 # getDefaultMeasure(task)
@@ -44,7 +44,7 @@ mean(out$measures.test$mmce)
 # mmce.test.mean= 0.3910559
 
 # 3 repeated 10 non-spatial fold cross validation
-resampling2 = makeResampleDesc("repeatedcv", folds = 10, reps = 3)
+resampling2 = makeResampleDesc("RepCV", folds = 10, reps = 3)
 out = resample(learner = learner.rf, task = task,
                resampling = resampling2, measures = list(mmce))
 mean(out$measures.test$mmce)
